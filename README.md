@@ -3,13 +3,13 @@
 Multi robot path planning with Aritificial Potential Functions.
 
 Here we use Gaussian potential functions as described in [1]. Need to add Lagrangian dynamics to compute higher order control inputs. 
-For now we only compute the next best position to follow the negrative gradient. 
+For now, we only compute the next best position to follow the negrative gradient. 
 
 Install scipy. 
 
     pip install 'scipy'
 
-To run create a directory named 'data' to store the plot images and run the script. 
+To run, create a directory named 'data' to store the plot images and run the script. 
 
     mkdir data && python potential_field_planning.py
 
