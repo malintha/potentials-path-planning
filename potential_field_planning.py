@@ -9,6 +9,8 @@ import math
 from numpy import linalg as la
 import matplotlib.pyplot as plt
 from scipy.ndimage import gaussian_filter
+import os
+import glob
 
 OBSLEN = 5
 AREA_WIDTH = 30.0  #
@@ -92,7 +94,7 @@ def cal_dynamic_potential_field(curr_pos, id, xw, yw, res):
     return pmap
 
 
-def calc_next_position(id, curr_pos, res, pmap, xvals, yvals):
+def calc_next_position(id, curr_pos, res, pmap, xvals, yvals, it):
     minx = xvals[0]
     maxx = xvals[1]
     miny = yvals[0]
@@ -137,6 +139,8 @@ def calc_next_position(id, curr_pos, res, pmap, xvals, yvals):
 
     if show_animation:
         plt.pause(0.0001)
+        if id == len(curr_pos)-1:
+            plt.savefig('data/im_'+str(it))
     return curr_pos
 
 
@@ -172,22 +176,22 @@ def main():
 
     if show_animation:
         draw_heatmap(pmap)
-        plt.plot(gix, giy, "*m")
+        plt.plot(gix, giy, "-ok")
         plt.gcf().canvas.mpl_connect('key_release_event',
                                      lambda event: [exit(0) if event.key == 'escape' else None])
     xvals = [minx, maxx]
     yvals = [miny, maxy]
 
-    # path generation
-    for it in range(50):  # num of iterations
+    # num of iterations
+    for it in range(60):
         for r in range(len(curr_pos)):
-            curr_pos = calc_next_position(r, curr_pos, grid_size, pmap, xvals, yvals)
-
-    if show_animation:
-        plt.show()
+            curr_pos = calc_next_position(r, curr_pos, grid_size, pmap, xvals, yvals, it)
 
 
 if __name__ == '__main__':
+    files = glob.glob('./data/*')
+    for f in files:
+        os.remove(f)
     print(__file__ + " start!!")
     main()
     print(__file__ + " Done!!")
