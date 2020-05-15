@@ -49,7 +49,7 @@ def calc_goal_potential(pos, goal):
     return 3 * math.exp(la.norm(np.array(pos) - np.array(goal)) / 30)
 
 
-def calc_static_potential_field(ox, oy, gx, gy, res, rr):
+def calc_static_potential_field(ox, oy, gx, gy, res):
     minx = 0
     miny = 0
     maxx = AREA_WIDTH
@@ -113,8 +113,12 @@ def calc_next_position(id, curr_pos, res, pmap, xvals, yvals, it):
             colstr = "*r"
         elif id == 1:
             colstr = "*g"
-        else:
+        elif id == 3:
             colstr = "*b"
+	elif id == 4:
+	    colstr = "*y"
+	else:
+	    colstr = "*m"
         plt.plot(ix, iy, colstr)
 
     motion = get_motion_model()
@@ -154,13 +158,14 @@ def main():
 
     curr_pos = [[5, 8],
                 [3, 5],
-                [8, 6]]
+                [8, 6],
+		[3, 2],
+		[2, 4]]
 
     gx = 25.0  # goal x position [m]
     gy = 25.0  # goal y position [m]
 
     grid_size = 0.5  # potential grid size [m]
-    robot_radius = 5.0  # robot radius [m]
 
     ox = [15]  # obstacle x position list [m]
     oy = [15]  # obstacle y position list [m]
@@ -169,7 +174,7 @@ def main():
         plt.grid(True)
         plt.axis("equal")
 
-    pmap, minx, miny, maxx, maxy = calc_static_potential_field(ox, oy, gx, gy, grid_size, robot_radius)
+    pmap, minx, miny, maxx, maxy = calc_static_potential_field(ox, oy, gx, gy, grid_size)
 
     gix = round((gx - minx) / grid_size)
     giy = round((gy - miny) / grid_size)
